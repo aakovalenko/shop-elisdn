@@ -37,14 +37,25 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+
+    ],
+    'as access' => [
+        'class' => 'yii\filters\AccessControl',
+        'except' => ['site/login', 'site/error'], //за исключением
+        'rules' => [
+            [
+                'allow' => true,
+                'roles' => ['@'],
+            ],
+
+        ],
     ],
     'params' => $params,
 ];
