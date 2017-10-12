@@ -32,6 +32,10 @@ return [
         'session' => [
             // this is the name of the session cookie used for login on the backend
             'name' => '_session',
+            'cookieParams' => [
+                'domain' => $params['cookieDomain'],
+                'httpOnly' => true,
+            ]
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

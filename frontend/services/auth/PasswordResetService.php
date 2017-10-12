@@ -10,12 +10,14 @@ use frontend\forms\PasswordResetRequestForm;
 use common\entities\User;
 use frontend\forms\ResetPasswordForm;
 use Yii;
+use yii\mail\MailerInterface;
 
 class PasswordResetService
 {
     private $supportEmail;
+    private $mailer;
 
-    public function __construct($supporEmail)
+    public function __construct($supportEmail, MailerInterface $mailer)
     {
         $this->supportEmail = $supportEmail;
     }
@@ -38,13 +40,13 @@ class PasswordResetService
             throw new \RuntimeException('Saving error.');
         }
 
-        $sent = Yii::$app
+        $sent = $this
             ->mailer
             ->compose(
                 ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
                 ['user' => $user]
             )
-            ->setFrom($this->.$this->supportEmail)
+            ->setFrom($this->$this->supportEmail)
             ->setTo($user->email)
             ->setSubject('Password reset for ' . Yii::$app->name)
             ->send();
