@@ -52,7 +52,7 @@ class PasswordResetService
         }
     }
 
-    public function reset(sring $token, ResetPasswordForm $form): void
+    public function reset(string $token, ResetPasswordForm $form): void
     {
         $user = User::findByPasswordResetToken($token);
 

@@ -228,16 +228,18 @@ class SiteController extends Controller
         }
 
         $form = new ResetPasswordForm();
+
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try{
                 (new \PasswordResetService()->reset($token, $form))
                 Yii::$app->session->setFlash('success', 'New password saved.');
-            }catch (\DomainException $e){
+                return $this->goHome();
+            } catch (\DomainException $e){
                 Yii::$app->errorHandler->logException($e);
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
 
-            return $this->goHome();
+
         }
 
         return $this->render('resetPassword', [
