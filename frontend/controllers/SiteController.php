@@ -169,6 +169,23 @@ class SiteController extends Controller
         ]);
     }
 
+    public function actionCheckout()
+    {
+        $form = new CheckoutForm();
+         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+
+
+             (new OrderService())->checkout(Yii::$app->user->id, $form);
+
+            return $this->refresh();
+         }
+         return $this->render('signup', [
+            'model' => $form,
+         ]);
+    }
+
+
+
     /**
      * Requests password reset.
      *
@@ -216,5 +233,36 @@ class SiteController extends Controller
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
+    }
+}
+
+class OrderService
+{
+    public function checkout($userId, $form): void
+    {
+        $user = $this->findUser($userId);
+
+        if ($user->isBanned()) {
+            throw new \DomainException();
+        }
+
+        $cart = $this->findCart($user->id);
+
+        if (!$cart->hasItems()) {
+            throw new \DomainException();
+        }
+
+        $order = new Order($form->name);
+
+        foreach ($cart->getItems() as $item) {
+            $order->addItem($item->getProduct(), $item->getAmount());
+        }
+
+        Yii::$app->db->trasaction(function () use ($order, $user, $cart) {
+            $order->save();
+            $user->save();
+            $cart->clear();
+            $this->saveCart($cart);
+        });
     }
 }
