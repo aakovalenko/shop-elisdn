@@ -29,7 +29,6 @@ class SignupForm extends Model
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
 
-
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
         ];

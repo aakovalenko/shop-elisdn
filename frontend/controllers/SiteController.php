@@ -13,7 +13,8 @@ use frontend\forms\ResetPasswordForm;
 use frontend\forms\SignupForm;
 use frontend\forms\ContactForm;
 use frontend\services\auth\SignupService;
-
+use yii\web\NotFoundHttpException;
+use frontend\services\auth\PasswordResetService;
 
 
 /**
@@ -218,14 +219,23 @@ class SiteController extends Controller
      */
     public function actionResetPassword($token)
     {
+        $service = new PasswordResetService();
+
         try {
-            $model = new ResetPasswordForm($token);
-        } catch (InvalidParamException $e) {
+            $service->validateToken($token);
+        } catch (\DomainException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
+        $form = new ResetPasswordForm();
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try{
+                (new \PasswordResetService()->reset($token, $form))
+                Yii::$app->session->setFlash('success', 'New password saved.');
+            }catch (\DomainException $e){
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
 
             return $this->goHome();
         }
@@ -264,5 +274,13 @@ class OrderService
             $cart->clear();
             $this->saveCart($cart);
         });
+    }
+
+    private function findUser($userId): User
+    {
+        if (!user = User::findOne($userId)) {
+            throw new NotFoundHttpException();
+        }
+        return $user;
     }
 }
