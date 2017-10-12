@@ -10,7 +10,10 @@ return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'log',
+        'common\bootstrap\SetUp'
+    ],
     'modules' => [],
     'components' => [
 
@@ -18,13 +21,17 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'common\entities\User',
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true, 'domain' => '.shop.dev'],
+            'identityCookie' => [
+                'name' => '_identity',
+                'httpOnly' => true,
+                'domain' => $params['cookieDomain'],
+            ],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
-            'name' => 'advanced',
+            'name' => '_session',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

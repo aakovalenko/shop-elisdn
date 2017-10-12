@@ -219,7 +219,7 @@ class SiteController extends Controller
      */
     public function actionResetPassword($token)
     {
-        $service = new PasswordResetService();
+        $service = Yii::$container->get(PasswordResetService::class);
 
         try {
             $service->validateToken($token);
@@ -239,11 +239,10 @@ class SiteController extends Controller
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
 
-
         }
 
         return $this->render('resetPassword', [
-            'model' => $model,
+            'model' => $form,
         ]);
     }
 }
