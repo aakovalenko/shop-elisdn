@@ -5,10 +5,10 @@
  * Date: 11.10.17
  * Time: 16:55
  */
-namespace frontend\services\auth;
+namespace shop\auth\services;
 
-use common\entities\User;
-use frontend\forms\SignupForm;
+use shop\entities\User;
+use shop\forms\auth\SignupForm;
 use yii\mail\MailerInterface;
 
 class SignupService

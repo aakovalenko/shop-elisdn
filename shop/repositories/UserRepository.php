@@ -1,7 +1,7 @@
 <?php
-namespace common\repositories;
+namespace shop\repositories;
 
-use common\entities\User;
+use shop\entities\User;
 use yii\web\NotFoundHttpException;
 
 class UserRepository

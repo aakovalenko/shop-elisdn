@@ -1,12 +1,12 @@
 <?php
-namespace frontend\services\auth;
+namespace shop\auth\services;
 
-use frontend\forms\PasswordResetRequestForm;
-use common\entities\User;
-use frontend\forms\ResetPasswordForm;
+use shop\forms\auth\PasswordResetRequestForm;
+use shop\entities\User;
+use shop\forms\auth\ResetPasswordForm;
 use Yii;
 use yii\mail\MailerInterface;
-use common\repositories\UserRepository;
+use shop\repositories\UserRepository;
 
 class PasswordResetService
 {

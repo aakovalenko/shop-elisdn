@@ -5,7 +5,7 @@
  * Date: 11.10.17
  * Time: 15:37
  */
-namespace common\entities;
+namespace shop\entities;
 
 trait InstantiateTrait
 {
