@@ -6,7 +6,7 @@
  * Time: 14:39
  */
 
-namespace shop\entities;
+namespace shop\entities\User;
 
 
 use Webmozart\Assert\Assert;
