@@ -1,5 +1,5 @@
 <?php
-namespace shop\auth\services;
+namespace shop\services\auth;
 
 use shop\forms\auth\PasswordResetRequestForm;
 use shop\entities\User;

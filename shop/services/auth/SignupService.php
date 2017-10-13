@@ -5,7 +5,7 @@
  * Date: 11.10.17
  * Time: 16:55
  */
-namespace shop\auth\services;
+namespace shop\services\auth;
 
 use shop\entities\User;
 use shop\forms\auth\SignupForm;

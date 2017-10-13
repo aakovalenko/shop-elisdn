@@ -1,6 +1,6 @@
 <?php
 
-namespace shop\auth\services;
+namespace shop\services\auth;
 
 use shop\entities\User;
 use shop\repositories\UserRepository;

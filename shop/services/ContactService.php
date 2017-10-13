@@ -1,13 +1,13 @@
 <?php
 
-namespace frontend\services\contact;
+namespace shop\services;
 /**
  * Created by PhpStorm.
  * User: andri
  * Date: 12.10.17
  * Time: 14:45
  */
-use frontend\forms\ContactForm;
+use shop\forms\ContactForm;
 use yii\mail\MailerInterface;
 
 class ContactService
