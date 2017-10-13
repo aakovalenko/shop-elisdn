@@ -171,18 +171,7 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionConfirm($token)
-    {
-        try{
-            $this->signupService->confirm($token);
-            Yii::$app->session->setFlash('success', 'Your email is confirmed.');
-            return $this->redirect(['login']);
-        } catch (\DomainException $e) {
-            Yii::$app->errorHandler->logException($e);
-            Yii::$app->session->setFlash('error', $e->getMessage());
-            return $this->goHome();
-        }
-    }
+
 
  /*   public function actionCheckout()
     {
