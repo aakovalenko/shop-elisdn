@@ -23,9 +23,9 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    use InstantiateTrait;
+    //use InstantiateTrait;
 
-    const STATUS_DELETED = 0;
+    const STATUS_WAIT = 0;
     const STATUS_ACTIVE = 10;
 
     /**
@@ -34,17 +34,27 @@ class User extends ActiveRecord implements IdentityInterface
      * @return User|null the saved model or null if saving fails
      */
 
-    public static function signup(string $username, string $email, string $password): self
+    public static function requestSignup(string $username, string $email, string $password): self
     {
-        $user = new static();
-        $this->username = $username;
-        $this->email = $email;
-        $this->setPassword($password);
-        $this->created_at = time();
-        $this->status = self::STATUS_ACTIVE;
-        $this->generateAuthKey();
+        $user = new User();
+        $user->username = $username;
+        $user->email = $email;
+        $user->setPassword($password);
+        $user->created_at = time();
+        $user->status = self::STATUS_WAIT;
+        $user->email_confirm_token = Yii::$app->security->generateRandomString();
+        $user->generateAuthKey();
         return $user;
+    }
 
+    public function confirmSignup()
+    {
+        if (!$this->isWait()) {
+            throw new \DomainException('User is already active.');
+        }
+
+        $this->status = self::STATUS_ACTIVE;
+        $this->removeEmailConfirmToken();
     }
 
     public function requestPasswordReset(): void
@@ -67,6 +77,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function isActive(): bool
     {
         return $this->status === self::STATUS_ACTIVE;
+    }
+
+    public function isWait(): bool
+    {
+        return $this->status === self::STATUS_WAIT;
     }
 
     /**
@@ -94,7 +109,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_WAIT]],
         ];
     }
 
@@ -221,11 +236,19 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
+
     /**
      * Removes password reset token
      */
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+
+
+    private function removeEmailConfirmToken()
+    {
+        $this->email_confirm_token = null;
     }
 }
