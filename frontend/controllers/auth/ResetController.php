@@ -45,7 +45,7 @@ class ResetController extends Controller
         }
 
         $form = new ResetPasswordForm();
-        if ($form->load(Yii::$app-.request-.post()) && $form->validate()) {
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 $this->service->reset($token, $form);
                 Yii::$app->session->setFlash('success', 'New password saved.');
