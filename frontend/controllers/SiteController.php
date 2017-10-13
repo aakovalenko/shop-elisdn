@@ -103,43 +103,9 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    /**
-     * Logs in a user.
-     *
-     * @return mixed
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
 
-        $form = new LoginForm();
-        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            try{
-                $user = $this->authService->auth($form);
-                Yii::$app->user->login($user, $form->rememberMe ? 3600 * 24 *30 : 0);
-                return $this->goBack();
-            }catch (\DomainException $e) {
-                throw new BadRequestHttpException($e->getMessage(), 0, $e);
-            }
-        }
-            return $this->render('login', [
-                'model' => $form,
-            ]);
-    }
 
-    /**
-     * Logs out the current user.
-     *
-     * @return mixed
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
 
-        return $this->goHome();
-    }
 
     /**
      * Displays contact page.
