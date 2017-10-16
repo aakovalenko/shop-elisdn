@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andri
- * Date: 13.10.17
- * Time: 14:39
- */
 
 namespace shop\entities\User;
-
 
 use Webmozart\Assert\Assert;
 use yii\db\ActiveRecord;
@@ -24,6 +17,11 @@ class Network extends ActiveRecord
         $item->identity = $identity;
 
         return $item;
+    }
+
+    public function isFor($network, $identity): bool
+    {
+        return $this->network === $network && $this->identity === $identity;
     }
 
     public static function tableName()
