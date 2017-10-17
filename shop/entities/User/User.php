@@ -145,15 +145,6 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_WAIT]],
-        ];
-    }
 
     /**
      * @inheritdoc
