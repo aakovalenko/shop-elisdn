@@ -41,6 +41,7 @@
                         'items' => [
                             ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
                             ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'],],
+                            ['label' => 'User', 'icon' => 'user', 'url' => ['/user/index'], 'active'=>$this->context->id === 'user'],
                             [
                                 'label' => 'Level One',
                                 'icon' => 'circle-o',
